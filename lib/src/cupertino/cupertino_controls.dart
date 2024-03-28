@@ -2,20 +2,20 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
-import 'package:chewie/src/animated_play_pause.dart';
-import 'package:chewie/src/center_play_button.dart';
-import 'package:chewie/src/chewie_player.dart';
-import 'package:chewie/src/chewie_progress_colors.dart';
-import 'package:chewie/src/cupertino/cupertino_progress_bar.dart';
-import 'package:chewie/src/cupertino/widgets/cupertino_options_dialog.dart';
-import 'package:chewie/src/helpers/utils.dart';
-import 'package:chewie/src/models/option_item.dart';
-import 'package:chewie/src/models/subtitle_model.dart';
-import 'package:chewie/src/notifiers/index.dart';
+import 'package:chewie_vlc/src/animated_play_pause.dart';
+import 'package:chewie_vlc/src/center_play_button.dart';
+import 'package:chewie_vlc/src/chewie_player.dart';
+import 'package:chewie_vlc/src/chewie_progress_colors.dart';
+import 'package:chewie_vlc/src/cupertino/cupertino_progress_bar.dart';
+import 'package:chewie_vlc/src/cupertino/widgets/cupertino_options_dialog.dart';
+import 'package:chewie_vlc/src/helpers/utils.dart';
+import 'package:chewie_vlc/src/models/option_item.dart';
+import 'package:chewie_vlc/src/models/subtitle_model.dart';
+import 'package:chewie_vlc/src/notifiers/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
 
 class CupertinoControls extends StatefulWidget {
   const CupertinoControls({
@@ -38,7 +38,7 @@ class CupertinoControls extends StatefulWidget {
 class _CupertinoControlsState extends State<CupertinoControls>
     with SingleTickerProviderStateMixin {
   late PlayerNotifier notifier;
-  late VideoPlayerValue _latestValue;
+  late VlcPlayerValue _latestValue;
   double? _latestVolume;
   Timer? _hideTimer;
   final marginSize = 5.0;
@@ -50,7 +50,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
   Timer? _bufferingDisplayTimer;
   bool _displayBufferingIndicator = false;
   double selectedSpeed = 1.0;
-  late VideoPlayerController controller;
+  late VlcPlayerController controller;
 
   // We know that _chewieController is set in didChangeDependencies
   ChewieController get chewieController => _chewieController!;
@@ -68,7 +68,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
       return chewieController.errorBuilder != null
           ? chewieController.errorBuilder!(
               context,
-              chewieController.videoPlayerController.value.errorDescription!,
+              chewieController.videoPlayerController.value.errorDescription,
             )
           : const Center(
               child: Icon(
@@ -372,7 +372,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
   }
 
   GestureDetector _buildMuteButton(
-    VideoPlayerController controller,
+    VlcPlayerController controller,
     Color backgroundColor,
     Color iconColor,
     double barHeight,
@@ -383,10 +383,10 @@ class _CupertinoControlsState extends State<CupertinoControls>
         _cancelAndRestartTimer();
 
         if (_latestValue.volume == 0) {
-          controller.setVolume(_latestVolume ?? 0.5);
+          controller.setVolume((_latestVolume ?? 0.5).toInt());
         } else {
-          _latestVolume = controller.value.volume;
-          controller.setVolume(0.0);
+          _latestVolume = controller.value.volume.toDouble();
+          controller.setVolume(0.0.toInt());
         }
       },
       child: AnimatedOpacity(
@@ -418,7 +418,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
   }
 
   GestureDetector _buildPlayPause(
-    VideoPlayerController controller,
+    VlcPlayerController controller,
     Color iconColor,
     double barHeight,
   ) {
@@ -467,7 +467,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
   }
 
   Widget _buildSubtitleToggle(Color iconColor, double barHeight) {
-    //if don't have subtitle hiden button
+    //if don't have subtitle hidden button
     if (chewieController.subtitle?.isEmpty ?? true) {
       return const SizedBox();
     }
@@ -539,7 +539,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
   }
 
   GestureDetector _buildSpeedButton(
-    VideoPlayerController controller,
+    VlcPlayerController controller,
     Color iconColor,
     double barHeight,
   ) {
@@ -770,7 +770,7 @@ class _CupertinoControlsState extends State<CupertinoControls>
         (_latestValue.position + const Duration(seconds: 15)).inMilliseconds;
     await controller.seekTo(Duration(milliseconds: math.min(skip, end)));
     // Restoring the video speed to selected speed
-    // A delay of 1 second is added to ensure a smooth transition of speed after forwarding the video as forwaring is an asynchronous function
+    // A delay of 1 second is added to ensure a smooth transition of speed after forwarding the video as forwarding is an asynchronous function
     Future.delayed(const Duration(milliseconds: 1000), () {
       controller.setPlaybackSpeed(selectedSpeed);
     });

@@ -1,6 +1,6 @@
-# Chewie Example
+# chewie_vlc Example
 
-An example of how to use the chewie for Flutter
+An example of how to use the chewie_vlc for Flutter
 
 ## Getting Started
 

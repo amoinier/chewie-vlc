@@ -1,4 +1,4 @@
-# chewie
+# chewie_vlc
 
 [![Flutter Community: chewie](https://fluttercommunity.dev/_github/header/chewie)](https://github.com/fluttercommunity/community)
 
@@ -6,9 +6,9 @@
 ![CI](https://github.com/brianegan/chewie/workflows/CI/badge.svg)
 [![Generic badge](https://img.shields.io/badge/platform-android%20|%20ios%20|%20web%20-blue.svg)](https://pub.dev/packages/chewie)
 
-The video player for Flutter with a heart of gold. 
+Based on Chewie from http://github.com/fluttercommunity/chewie, it uses flutter-vlc-player instead of video-player
 
-The [`video_player`](https://pub.dartlang.org/packages/video_player) plugin provides low-level access to video playback. Chewie uses the `video_player` under the hood and wraps it in a friendly Material or Cupertino UI!
+The [`flutter-vlc-player`](https://pub.dartlang.org/packages/flutter-vlc-player) plugin provides low-level access to video playback. Chewie uses the `video_player` under the hood and wraps it in a friendly Material or Cupertino UI!
 
 ## Preview
 
@@ -21,18 +21,18 @@ The [`video_player`](https://pub.dartlang.org/packages/video_player) plugin prov
 
 ## Installation
 
-In your `pubspec.yaml` file within your Flutter Project add `chewie` and `video_player` under dependencies:
+In your `pubspec.yaml` file within your Flutter Project add `chewie_vlc` and `flutter-vlc-player` under dependencies:
 
 ```yaml
 dependencies:
-  chewie: <latest_version>
-  video_player: <latest_version>
+  chewie_vlc: <latest_version>
+  flutter-vlc-player: <latest_version>
 ```
 
 ## Using it
 
 ```dart
-import 'package:chewie/chewie.dart';
+import 'package:chewie_vlc/chewie_vlc.dart';
 final videoPlayerController = VideoPlayerController.network(
     'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4');
 
