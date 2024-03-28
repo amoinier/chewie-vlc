@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chewie/chewie.dart';
+import 'package:chewie_vlc/chewie_vlc.dart';
 import 'package:chewie_example/app/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
